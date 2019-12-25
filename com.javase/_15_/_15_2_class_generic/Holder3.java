@@ -1,6 +1,5 @@
 package _15_._15_2_class_generic;
 
-import com.sun.org.apache.xpath.internal.operations.String;
 
 /**
  * @author zhangyn
