@@ -11,7 +11,6 @@ public class QueryData {
 
     }
 
-
     private String executeQuery() {
         return "result";
     }
