@@ -1,4 +1,4 @@
-package _1_startup.dbutil;
+package _1_strategy.dbutil;
 
 public class QueryData {
 

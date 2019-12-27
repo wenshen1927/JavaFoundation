@@ -1,4 +1,4 @@
-package _1_startup.duck;
+package _1_strategy.duck;
 
 public class FlyRocketPowered implements FlyBehavior {
     @Override
