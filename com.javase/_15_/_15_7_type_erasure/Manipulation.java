@@ -34,7 +34,6 @@ class Manipulator2<T extends HasF> {
         this.obj = obj;
     }
     public void manipulate(){
-        //
          obj.f();
     }
 }

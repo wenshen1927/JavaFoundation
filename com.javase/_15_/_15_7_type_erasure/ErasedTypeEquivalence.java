@@ -14,5 +14,7 @@ public class ErasedTypeEquivalence {
         Class<? extends ArrayList> c2 = new ArrayList<Integer>(1).getClass();
 
         System.out.println(c1 == c2);
+        System.out.println(c1.getSimpleName());
+        System.out.println(c2.getSimpleName());
     }
 }

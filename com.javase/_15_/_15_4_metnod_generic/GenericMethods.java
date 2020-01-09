@@ -22,6 +22,7 @@ public class GenericMethods {
     public static void main(String[] args) {
         GenericMethods gm = new GenericMethods();
         /**在调用泛型方法的时候，通常不指定参数类型，而是像调用普通方法一样，编译器会做类型参数推断*/
+        /**如果传入基本数据类型，会自动打包成包装类*/
         gm.f(" ");
         gm.f(new Integer(12));
         gm.f(1);

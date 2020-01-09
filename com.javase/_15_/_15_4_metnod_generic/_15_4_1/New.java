@@ -17,6 +17,5 @@ public class New {
     public static void main(String[] args) {
         /**初始化的时候，不指定泛型，编译器可以自动推断出类型*/
         Map<String, Integer> map = New.map();
-
     }
 }

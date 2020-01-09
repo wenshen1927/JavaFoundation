@@ -1,1 +1,1 @@
-javacore包下是《Java核心技术》书中各章的笔记和练习
+javacore包下是《Java核心技术》书中git各章的笔记和练习

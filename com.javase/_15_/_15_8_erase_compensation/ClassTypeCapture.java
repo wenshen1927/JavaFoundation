@@ -10,6 +10,9 @@ import java.util.Map;
  * @Created by Super Man
  */
 public class ClassTypeCapture<T> {
+    /**
+     * 用来表示运行时的泛型类型信息
+     */
     Class<T> kind;
     /**
      * 用map来维护一个类型信息，表示运行时的泛型信息
