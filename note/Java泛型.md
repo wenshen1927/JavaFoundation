@@ -366,62 +366,50 @@ Java的泛型是用**擦除**实现的，即**在运行时，泛型的具体类�
 
 ## 泛型擦除的补偿
 
+已知泛型信息在运行期会被擦除，那么如果想在运行期能够拿到泛型的类型信息，怎么办？
+
 ## 泛型边界
 
-
-
-extends关键字
+extend关键字
 
 ```java
 interface HasColor { 
     Color getColor();
 }
-
 class Dimension {
     public int x, y, z;
 }
-
 class Colored<T extends HasColor> {
     T item;
-
     Colored(T item) {
         this.item = item;
     }
-
-    // 这里的泛型参数T,由于限定了其边界，所以可以用t的实例来调用方法
+    // 1、这里的泛型参数T,由于限定了其边界，所以可以用t的实例来调用方法
     Color color() {
         return this.item.getColor();
     }
 }
-
-// 这里编译错误，必须类在前，接口在后
+// 2、这里编译错误，必须类在前，接口在后
 // class ColoredDimention<T extends HasColor&Dimension>{ }
-
-// 多重边界
+// 3、多重边界
 class ColoredDimention<T extends Dimension & HasColor> {
-    /**这里的泛型实例其实就是一个Dimension和HasColor的子类实例对象*/
+    /**4、这里的泛型实例其实就是一个Dimension和HasColor的子类实例对象*/
     T item;
-
     ColoredDimention(T item) {
         this.item = item;
     }
-
     T getItem() {
         return item;
     }
-
     Color color() {
         return item.getColor();
     }
-
     int getX() {
         return item.x;
     }
-
     int getY() {
         return item.y;
     }
-
     int getZ() {
         return item.z;
     }
@@ -429,7 +417,7 @@ class ColoredDimention<T extends Dimension & HasColor> {
 
 interface Weight {int weight();}
 
-//泛型对象的边界只能继承一个类和多个接口
+//5、泛型对象的边界只能继承一个类和多个接口
 class Solid<T extends Dimension&HasColor&Weight>{
     T item;
     Solid(T item){
@@ -449,17 +437,14 @@ class Solid<T extends Dimension&HasColor&Weight>{
     }
 }
 class Bounded extends Dimension implements HasColor,Weight{
-
     @Override
     public  Color getColor() {
         return null;
     }
-
     public <V extends HasColor> void getColor(V item){
-//        V value = new V();// 泛型对象没有默认构造器，所以不能new出来
+//        V value = new V();// 6、泛型对象没有默认构造器，所以不能new出来
         Color color = item.getColor();
     }
-
     @Override
     public int weight() {
         return 0;
@@ -478,19 +463,97 @@ public class BasicBound {
         solid.getX();
         solid.weight();
         Bounded item = solid.getItem();
-        // Bounded1 就不行，因为它并没有完全符合Solid里泛型的继承规则，少实现了一个接口Weight，他们具有不同的继承结构
+        // 7、Bounded1 就不行，因为它并没有完全符合Solid里泛型的继承规则，少实现了一个接口Weight，他们具有不同的继承结构
 //        Solid<Bounded1> solid1 = new Solid<Bounded1>();
-        // 用通配符就可以
+        // 8、用通配符就可以
         Solid<? extends Bounded> solid1 = new Solid<>(new Bounded());
     }
 }
 ```
 
-- 
+
 
 ## 泛型通配符
 
+想要在两个类型之间建立某种类型的向上转型的关系，这就需要通配符
 
+```java
+package _15_._15_10_wildcard;
+import com.sun.tools.corba.se.idl.constExpr.Or;
+import java.util.ArrayList;
+import java.util.List;
+/**
+ * @author zhangyn
+ * @description 数组对持有的对象类型在编译期没有检查的机制，只有在运行期才能检查出来数组持有对象的类型
+ * 容器类加上泛型则可以在编译期检查类型，所以尽量使用容器类
+ * @date 2020-01-08 21:56
+ */
+public class CovariantArrays {
+    public static void main(String[] args) {
+      	// 1、编译错误，编译期就知道这个List持有的类型
+//    List<Fruit> flist = new ArrayList<Apple>();
+        // 2、编译没有错误，运行时可能出错
+        Fruit[] fruits = new Apple[10];
+        fruits[0] = new Apple();
+      	fruits[0] = new Jonathan();
+        // 抛出异常ArrayStoreException，因为运行时会检查fruits的实际类型是Apple
+        fruits[0] = new Fruit();
+        // 抛出异常ArrayStoreException
+        fruits[0] = new Orange();
+      	
+      	// 3、?  extends Fruit
+        List<? extends Fruit> flist = new ArrayList<Apple>();
+        // 全部编译错误，不能向flist里添加任何对象
+//        flist.add(new Apple());
+//        flist.add(new Orange());
+//        flist.add(new Object());
+        flist.add(null);
+        // 但是我们知道get出来的对象至少是一个Fruit对象
+        Fruit fruit = flist.get(0);
+      	
+      	// 4、? super Fruit
+      	List<? super Fruit> list1= new  ArrayList<>();
+        list1.add(new Apple());
+        list1.add(new Orange());
+        Object object = list1.get(0);
+        Fruit object1 = list1.get(1);
+    }
+}
+class Fruit {
+}
+class Apple extends Fruit {
+}
+class Jonathan extends Apple {
+}
+class Orange extends Fruit {
+}
+```
+
+### <? extends Fruit>
+
+![image-20200113001527604](/Users/zhangyanan/Library/Application Support/typora-user-images/image-20200113001527604.png)
+
+### 
+
+1、在add的时候，list可以是一个Fruit的list，也可以是Apple的list，还可以是Orange的list。
+
+ 编译器无法确定list的具体类型，所以不能add。
+
+2、在取的时候，至少知道这个容器里的对象是个Fruit类型，所以可以get。
+
+同理`List<? super Fruit> list1= new  ArrayList<>();`:
+
+### <? super Fruit>
+
+![image-20200113002931830](/Users/zhangyanan/Library/Application Support/typora-user-images/image-20200113002931830.png)
+
+
+
+1、在add的时候是安全的，因为add的Apple，或者Orange都是Fruit的子类；
+
+2、get是不安全的，因为不能确定list持有的是Fruit还是Object，如果是Object类型，那么
+
+`Fruit f = list.get(0);`object会强转为Fruit，会转型失败。所以编译器会在编译期让这种泛型不可以做get操作。
 
 ### PECS原则
 
@@ -508,3 +571,5 @@ Collections copy方法体现出super 和 extends
 参考：
 
 通配符和边界：<https://blog.csdn.net/liuhui12345/article/details/100051796>
+
+泛型通配符?与extends/super<https://how2j.cn/k/generic/generic-wildcard/376.html#nowhere>
