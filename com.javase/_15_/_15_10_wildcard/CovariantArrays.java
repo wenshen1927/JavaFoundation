@@ -13,7 +13,7 @@ public class CovariantArrays {
     public static void main(String[] args) {
         Fruit[] fruits = new Apple[10];
         fruits[0] = new Apple();
-        fruits[1] = new Jonathan();
+        fruits[0] = new Jonathan();
         // 跑出异常ArrayStoreException，因为运行时会检查fruits的实际类型是Apple
         fruits[0] = new Fruit();
         // 跑出异常ArrayStoreException
