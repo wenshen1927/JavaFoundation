@@ -1,10 +1,5 @@
 package _15_._15_10_wildcard._15_10_1;
 
-
-
-
-
-import java.applet.Applet;
 import java.util.Arrays;
 import java.util.List;
 
