@@ -12,5 +12,9 @@ public class MiniDuckSimulator {
         model.performFly();
         model.setFlyBehavior(FlyRocketPowered.class);
         model.performFly();
+
+        System.out.println("after another Duck behavior");
+        mallard.performFly();
+        mallard.display();
     }
 }
