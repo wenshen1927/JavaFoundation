@@ -19,11 +19,9 @@ public class Callbacks {
         caller2.go();
     }
 }
-
 interface Incrementable {
     void increment();
 }
-
 /**
  * 外部类实现接口
  */
@@ -36,8 +34,6 @@ class Callee1 implements Incrementable {
         System.out.println(i);
     }
 }
-
-
 class MyIncrement implements Incrementable {
 
     @Override
@@ -49,13 +45,11 @@ class MyIncrement implements Incrementable {
         mi.increment();
     }
 }
-
 /**
  * 类继承实现increment()
  */
 class Callee2 extends MyIncrement {
     private int i = 0;
-
     // 外部类已经实现了increment()，并且与期望的继承接口的increment()功能不同
     // 如果想再实现一种increment的功能，必须使用内部类
     public void increment() {
@@ -63,31 +57,25 @@ class Callee2 extends MyIncrement {
         i++;
         System.out.println(i);
     }
-
     /**
      * 内部类实现接口
      */
     private class Closure implements Incrementable {
-
         @Override
         public void increment() {
 //            this.increment();
             Callee2.this.increment();
         }
     }
-
     Incrementable getCallbackReference() {
         return new Closure();
     }
 }
-
 class Caller {
     private Incrementable callbackReference;
-
     Caller(Incrementable cbh) {
         this.callbackReference = cbh;
     }
-
     void go() {
         callbackReference.increment();
     }
