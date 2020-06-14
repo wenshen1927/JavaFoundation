@@ -1,9 +1,6 @@
 package _11_;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 class Snow{}
 class Power extends Snow{}
@@ -23,6 +20,7 @@ public class AsListInference {
             System.out.println(snow2);
         }
         List<Integer> integers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8);
+        List<String> singletonList = Collections.singletonList("aaa");
         ListIterator<Integer> it = integers.listIterator();
 
         while (it.hasNext()) {
@@ -31,7 +29,5 @@ public class AsListInference {
         while (it.hasPrevious()) {
             System.out.println(it.previousIndex()+","+it.previous());
         }
-
-
     }
 }
